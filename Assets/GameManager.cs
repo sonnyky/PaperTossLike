@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour, PointInterface {
 
 	// Use this for initialization
 	void Start () {
+        LoadUiObjects();
 		currentPoint = 0;
 	}
 	
@@ -22,7 +23,6 @@ public class GameManager : MonoBehaviour, PointInterface {
     //     eventData: null,
     //     functor: (x,y)=>x.OnReceive());
 	public void OnReceive () {
-		Debug.Log (currentPoint);
 		currentPoint += 10;
 		Debug.Log (currentPoint);
 		ExecuteEvents.Execute<TextInterface>(
@@ -34,5 +34,10 @@ public class GameManager : MonoBehaviour, PointInterface {
 	public int GetCurrentPoint () {
 		return currentPoint;
 	}
+
+    private void LoadUiObjects()
+    {
+        GameObject UiGroup = (GameObject) Instantiate(Resources.Load("MyAssets/Prefabs/UI/UICamera")) as GameObject;
+    }
 
 }

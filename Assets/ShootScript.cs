@@ -8,7 +8,7 @@ public class ShootScript : MonoBehaviour {
     private Vector3 start, end, force;
     private Vector3 direction_on_screen;
     private Rigidbody rb;
-    private float starttime, difftime, magnitude;
+    private float difftime, magnitude;
 	// Use this for initialization
 	void Start () {
         initialBallPosition = new Vector3(0f, -0.1f, 1.6f);
@@ -27,7 +27,6 @@ public class ShootScript : MonoBehaviour {
                 start.x = t.position.x;
                 start.y = t.position.y;
                 start.z = 0;
-                starttime = Time.time;
             }
 
             if (t.phase == TouchPhase.Ended || t.phase == TouchPhase.Canceled)
@@ -45,6 +44,15 @@ public class ShootScript : MonoBehaviour {
                 magnitude = direction_on_screen.magnitude;
 
                 force.x = direction_on_screen.x / -100;
+                
+                if(force.x > 1)
+                {
+                    force.x = 1f;
+                }
+                if (force.x < -1)
+                {
+                    force.x = -1f;
+                }
                 force.y = magnitude / 180;
                 force.z = magnitude / -200;
 
