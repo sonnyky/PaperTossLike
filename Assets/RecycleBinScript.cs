@@ -16,8 +16,9 @@ public class RecycleBinScript : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other) {
 		if (other.tag == "Paper") {
+            Debug.Log("Collided");
 			Destroy(other.gameObject);
-
+           
 			ExecuteEvents.Execute<PointInterface>(
 				target: GameObject.Find("GameManager"),
 				eventData: null,

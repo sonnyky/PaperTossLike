@@ -8,7 +8,7 @@ public class StatusTextManager : MonoBehaviour, TextInterface {
 
 	// Use this for initialization
 	void Start () {
-		statusText.text = "Score: 0";
+
 	}
 	
 	// Update is called once per frame
@@ -20,7 +20,7 @@ public class StatusTextManager : MonoBehaviour, TextInterface {
 		Debug.Log("onchange");
 		GameManager gameManager = GameObject.Find ("GameManager").GetComponent<GameManager> ();
 		int currentPoint = gameManager.GetCurrentPoint ();
-		statusText.text = "Score: " + currentPoint.ToString ();
+		statusText.text = currentPoint.ToString ();
 	}
 
 }
