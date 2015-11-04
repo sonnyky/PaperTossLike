@@ -4,12 +4,14 @@ using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour, PointInterface {
 
-	int currentPoint;
+	private int currentPoint;
+	private int highScorePoint;
 
 	// Use this for initialization
 	void Start () {
         LoadUiObjects();
 		currentPoint = 0;
+		highScorePoint = 0;
 	}
 	
 	// Update is called once per frame
@@ -21,10 +23,24 @@ public class GameManager : MonoBehaviour, PointInterface {
 	// ExecuteEvents.Execute<PointInterface>(
     //     target: GameObject.Find("GameManager"),
     //     eventData: null,
-    //     functor: (x,y)=>x.OnReceive());
-	public void OnReceive () {
-		currentPoint += 10;
+    //     functor: (x,y)=>x.OnSuccess());
+	public void OnSuccess () {
+		currentPoint += 1;
 		Debug.Log (currentPoint);
+		highScorePoint = System.Math.Max (currentPoint, highScorePoint);
+		ExecuteEvents.Execute<TextInterface>(
+			target: GameObject.Find("StatusText"),
+			eventData: null,
+			functor: (x,y)=>x.OnChange());
+	}
+
+	// Called by other classes like
+	// ExecuteEvents.Execute<PointInterface>(
+	//     target: GameObject.Find("GameManager"),
+	//     eventData: null,
+	//     functor: (x,y)=>x.OnFailure());
+	public void OnFailure () {
+		currentPoint = 0;
 		ExecuteEvents.Execute<TextInterface>(
 			target: GameObject.Find("StatusText"),
 			eventData: null,
