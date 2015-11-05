@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 
 public interface PointInterface : IEventSystemHandler {
 
-	void OnReceive ();
+	void OnSuccess ();
+	void OnFailure ();
 
 }
