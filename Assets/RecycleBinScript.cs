@@ -30,7 +30,8 @@ public class RecycleBinScript : MonoBehaviour {
 		if (other.tag == "Paper" && enable) {
             Debug.Log("Collided with a recycle bin");
 			Destroy(other.gameObject);
-           
+            this.gameObject.GetComponentInChildren<ParticleSystem>().Play();
+            this.gameObject.GetComponentInChildren<AudioSource>().Play();
 			ExecuteEvents.Execute<PointInterface>(
 				target: GameObject.Find("GameManager"),
 				eventData: null,
