@@ -29,7 +29,11 @@ public class GameManager : MonoBehaviour, PointInterface {
 		Debug.Log (currentPoint);
 		highScorePoint = System.Math.Max (currentPoint, highScorePoint);
 		ExecuteEvents.Execute<TextInterface>(
-			target: GameObject.Find("StatusText"),
+			target: GameObject.Find("ScoreText"),
+			eventData: null,
+			functor: (x,y)=>x.OnChange());
+		ExecuteEvents.Execute<TextInterface>(
+			target: GameObject.Find("HighScoreText"),
 			eventData: null,
 			functor: (x,y)=>x.OnChange());
 	}
@@ -42,13 +46,17 @@ public class GameManager : MonoBehaviour, PointInterface {
 	public void OnFailure () {
 		currentPoint = 0;
 		ExecuteEvents.Execute<TextInterface>(
-			target: GameObject.Find("StatusText"),
+			target: GameObject.Find("ScoreText"),
 			eventData: null,
 			functor: (x,y)=>x.OnChange());
 	}
 
 	public int GetCurrentPoint () {
 		return currentPoint;
+	}
+
+	public int GetHighScorePoint () {
+		return highScorePoint;
 	}
 
     private void LoadUiObjects()
