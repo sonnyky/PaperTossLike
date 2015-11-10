@@ -12,10 +12,13 @@ public class MenuButton : MonoBehaviour {
 	void Update () {
 	
 	}
-    public void OnClick()
-    {
-        Debug.Log("Button click!");
-        Application.Quit();
 
+    public void OnClick() {
+        Debug.Log("Button click!");
+
+		// We can add something (an alert like "Do you quit the game?") before quitting the game
+
+		// Return to the title
+		Application.LoadLevel ("TitleScene");
     }
 }
