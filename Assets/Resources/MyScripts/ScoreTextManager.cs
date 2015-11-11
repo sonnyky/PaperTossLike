@@ -2,13 +2,13 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class StatusTextManager : MonoBehaviour, TextInterface {
+public class ScoreTextManager : MonoBehaviour, TextInterface {
 
-	public Text statusText;
+	private Text scoreText;
 
 	// Use this for initialization
 	void Start () {
-
+		scoreText = this.GetComponent<Text> ();
 	}
 	
 	// Update is called once per frame
@@ -20,7 +20,7 @@ public class StatusTextManager : MonoBehaviour, TextInterface {
 		Debug.Log("onchange");
 		GameManager gameManager = GameObject.Find ("GameManager").GetComponent<GameManager> ();
 		int currentPoint = gameManager.GetCurrentPoint ();
-		statusText.text = currentPoint.ToString ();
+		scoreText.text = "Score: " + currentPoint.ToString ();
 	}
 
 }
