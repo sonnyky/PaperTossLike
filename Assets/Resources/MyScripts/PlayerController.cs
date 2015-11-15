@@ -4,11 +4,12 @@ using System.Collections;
 public class PlayerController : MonoBehaviour {
 
     public bool flag;
-    public new Camera camera;
+    private new Camera camera;
 
     void Start()
     {
         flag = false;
+        camera = Camera.main;
     }
 
 	// Use this for initialization
@@ -16,14 +17,14 @@ public class PlayerController : MonoBehaviour {
     {
         float velocity = 0.004f;
         Vector3 viewPos = camera.WorldToViewportPoint(this.transform.position);
-
-        if (viewPos.x < 0.05f)
-        {
-            flag = true;
-        }
-        else if (viewPos.x > 0.9f)
+       
+        if (viewPos.x < 0f)
         {
             flag = false;
+        }
+        else if (viewPos.x > 1f)
+        {
+            flag = true;
         }
 
 
