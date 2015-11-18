@@ -19,6 +19,7 @@ public class ShootScript : MonoBehaviour {
 
     private bool can_swipe;
     private Vector3 bin_position, vector_bin_to_ball;
+    private Vector3 wind_position;
     private Vector3 start, end, force;
     private Vector3 direction_on_screen;
     private Rigidbody rb;
@@ -29,7 +30,7 @@ public class ShootScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         initialBallPosition = new Vector3(0f, -0.1f, 1.6f);
-        constantWind = new Vector3(Random.Range(-4.0F, 4.0F), 0f, 0f);
+        constantWind = new Vector3(Random.Range(-1F, 1F), 0f, 0f);
         ExecuteEvents.Execute<TextInterface>(
                 target: GameObject.Find("windStr"),
                 eventData: null,
@@ -101,6 +102,16 @@ public class ShootScript : MonoBehaviour {
             Debug.Log(force.z);
             Debug.Log(force.y);
             // Debug.Log(direction_in_world);
+            force.x += constantWind.x;
+            Debug.Log("WIND");
+            Debug.Log(constantWind.x);
+            constantWind.x = Random.Range(-1F, 1F);
+            ExecuteEvents.Execute<TextInterface>(
+               target: GameObject.Find("windStr"),
+               eventData: null,
+               functor: (x, y) => x.OnChange());
+            
+
             rb.useGravity = true;
             rb.AddForce(force, ForceMode.Impulse);
 
@@ -154,7 +165,7 @@ public class ShootScript : MonoBehaviour {
 	                force.y = distance_abs*5;
 	                force.z = distance_abs*-2;
                     force.x += constantWind.x;
-                    constantWind.x = Random.Range(-4.0F, 4.0F);
+                    constantWind.x = Random.Range(-1F, 1F);
                     ExecuteEvents.Execute<TextInterface>(
                        target: GameObject.Find("windStr"),
                        eventData: null,
