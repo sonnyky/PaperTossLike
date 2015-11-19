@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.EventSystems;
 
 public class ShootScript : MonoBehaviour {
     public GameObject ball;
     private GameObject clone_ball;
     private Vector3 initialBallPosition;
-
+    private Vector3 constantWind;
     private int game_difficulty;
 
     private float distance_abs, initial_velocity, initial_distance_to_trajectory;
@@ -18,6 +19,7 @@ public class ShootScript : MonoBehaviour {
 
     private bool can_swipe;
     private Vector3 bin_position, vector_bin_to_ball;
+    private Vector3 wind_position;
     private Vector3 start, end, force;
     private Vector3 direction_on_screen;
     private Rigidbody rb;
@@ -28,6 +30,11 @@ public class ShootScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         initialBallPosition = new Vector3(0f, -0.1f, 1.6f);
+        constantWind = new Vector3(Random.Range(-1F, 1F), 0f, 0f);
+        ExecuteEvents.Execute<TextInterface>(
+                target: GameObject.Find("windStr"),
+                eventData: null,
+                functor: (x, y) => x.OnChange());
         real_world_velocity = new Vector3(0f, 0f, 0f);
         ball_launch_angle = 70.0f;
         //Check current game difficulty
@@ -54,6 +61,7 @@ public class ShootScript : MonoBehaviour {
             start.x = Input.mousePosition.x;
             start.y = Input.mousePosition.y;
             start.z = 0;
+
         }
         if (Input.GetMouseButtonUp(0))
         {
@@ -94,6 +102,16 @@ public class ShootScript : MonoBehaviour {
             Debug.Log(force.z);
             Debug.Log(force.y);
             // Debug.Log(direction_in_world);
+            force.x += constantWind.x;
+            Debug.Log("WIND");
+            Debug.Log(constantWind.x);
+            constantWind.x = Random.Range(-1F, 1F);
+            ExecuteEvents.Execute<TextInterface>(
+               target: GameObject.Find("windStr"),
+               eventData: null,
+               functor: (x, y) => x.OnChange());
+            
+
             rb.useGravity = true;
             rb.AddForce(force, ForceMode.Impulse);
 
@@ -146,10 +164,16 @@ public class ShootScript : MonoBehaviour {
 	                //Forces in y and z axes will be made constant according to position to recycle bin
 	                force.y = distance_abs*5;
 	                force.z = distance_abs*-2;
+                    force.x += constantWind.x;
+                    constantWind.x = Random.Range(-1F, 1F);
+                    ExecuteEvents.Execute<TextInterface>(
+                       target: GameObject.Find("windStr"),
+                       eventData: null,
+                       functor: (x, y) => x.OnChange());
 
-	                //initialize ball prefab, using the camera rotation is not a good idea here, but first I just want to make this work
-	                //clone_ball = GameObject.Instantiate(ball, initialBallPosition, this.transform.rotation) as GameObject;
-	                rb = clone_ball.GetComponent<Rigidbody>();
+                    //initialize ball prefab, using the camera rotation is not a good idea here, but first I just want to make this work
+                    //clone_ball = GameObject.Instantiate(ball, initialBallPosition, this.transform.rotation) as GameObject;
+                    rb = clone_ball.GetComponent<Rigidbody>();
 	                Debug.Log(force.z);
 	                Debug.Log(force.y);
 	                // Debug.Log(direction_in_world);
@@ -171,6 +195,12 @@ public class ShootScript : MonoBehaviour {
         calc_result = Mathf.Sqrt(upper_half / lower_half);
         return calc_result;
     }
+
+    public float GetCurrentWind()
+    {
+        return constantWind.x;
+    }
+
 
     IEnumerator RespawnBall()
     {

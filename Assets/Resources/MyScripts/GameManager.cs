@@ -9,8 +9,9 @@ public class GameManager : MonoBehaviour, PointInterface {
     private static Vector3 easy_pos = new Vector3(0f, -0.5f, 1),
         med_pos = new Vector3(0f, -0.5f, 0.5f),
         hard_pos = new Vector3(0f, -0.5f, 0f);
+    private static Vector3 wind_pos = new Vector3(0.23f, -0.42f, 1.3f);
 
-	private int currentPoint;
+    private int currentPoint;
 	private int highScorePoint;
 
     // Get diffculty in the title scene
@@ -44,8 +45,14 @@ public class GameManager : MonoBehaviour, PointInterface {
 	// Use this for initialization
 	void Start () {
         LoadUiObjects();
-		Debug.Log (GameManager.GetDifficulty());
-		currentPoint = 0;
+
+        //Instantiate Windmill Object
+        //GameObject windMill = GameObject.Instantiate(Resources.Load("Windmill1/Prehab/Windmill"), wind_pos, Quaternion.Euler(0f, 130f, 0f)) as GameObject;
+        //windMill.name = "Windmill";
+        //Debug.Log("Windmill");
+
+        Debug.Log (GameManager.GetDifficulty());
+        currentPoint = 0;
 		highScorePoint = 0;
         //change position of recycle bin according to difficulty
         switch (GameManager.GetDifficulty())
