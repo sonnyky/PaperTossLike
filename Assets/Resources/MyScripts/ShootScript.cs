@@ -18,7 +18,7 @@ public class ShootScript : MonoBehaviour {
     private float ball_launch_angle;
 
     private bool can_swipe;
-    private Vector3 bin_position, vector_bin_to_ball;
+    private Vector3 vector_bin_to_ball;
     private Vector3 wind_position;
     private Vector3 start, end, force;
     private Vector3 direction_on_screen;
@@ -45,7 +45,7 @@ public class ShootScript : MonoBehaviour {
         //Get current distance from ball to bin trajectory
         initial_distance_to_trajectory = initialBallPosition.z - GameManager.GetBinPosition(game_difficulty).z;
 
-        clone_ball = GameObject.Instantiate(ball, initialBallPosition, this.transform.rotation) as GameObject;
+        RespawnBall();
         can_swipe = true;
         start = new Vector3(0f, 0f, 0f);
         end = new Vector3(0f, 0f, 0f);
@@ -54,8 +54,10 @@ public class ShootScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        //Track recycle bin position
-        bin_position = GameObject.Find("recycle_bin").transform.position;
+        if(clone_ball.transform.position.z < 1.3f)
+        {
+            ApplyWind();
+        }
 
         //This is just for checking the angles
         if (Input.GetMouseButtonDown(0))
@@ -83,7 +85,6 @@ public class ShootScript : MonoBehaviour {
 
             //Calculate for to throw paper ball object. Add force to the gameobject
             ThrowObject(tangent_swipe_on_screen);
-            StartCoroutine(RespawnBall());
             can_swipe = false;
         }
 
@@ -106,13 +107,21 @@ public class ShootScript : MonoBehaviour {
 	                end.y = t.position.y;
 	                end.z = 0f;
                     tangent_swipe_on_screen = (end.y - start.y) / (end.x - start.x);
+                    if (tangent_swipe_on_screen < 0)
+                    {
+                        tangent_swipe_on_screen = Mathf.Deg2Rad * 180 + tangent_swipe_on_screen;
+                    }
                     ThrowObject(tangent_swipe_on_screen);
-
-                    StartCoroutine(RespawnBall());
+                    
                     can_swipe = false;
                 }
             }
         }
+    }
+
+    private void ApplyWind()
+    {
+        clone_ball.GetComponent<Rigidbody>().AddForce(constantWind, ForceMode.Force);
     }
 
     private void ThrowObject(float tangent_swipe_on_screen)
@@ -129,13 +138,12 @@ public class ShootScript : MonoBehaviour {
         force.y = ball.GetComponent<Rigidbody>().mass * real_world_velocity.y;
         force.z = ball.GetComponent<Rigidbody>().mass * real_world_velocity.z;
         rb = clone_ball.GetComponent<Rigidbody>();
-        Debug.Log(force.z);
-        Debug.Log(force.y);
-        Debug.Log(force.x);
-        force.x += constantWind.x;
-        Debug.Log("WIND");
-        Debug.Log(constantWind.x);
-        constantWind.x = Random.Range(0F, 0.01F) * RandomizeNumberSign();
+       // Debug.Log(force.z);
+       // Debug.Log(force.y);
+       // Debug.Log(force.x);
+        //force.x += constantWind.x;
+       // Debug.Log("WIND");
+       // Debug.Log(constantWind.x);
         ExecuteEvents.Execute<TextInterface>(
            target: GameObject.Find("windStr"),
            eventData: null,
@@ -168,16 +176,16 @@ public class ShootScript : MonoBehaviour {
         {
             sign = -1;
         }
-        Debug.Log("Sign is : " + sign);
         return sign;
     }
 
-    IEnumerator RespawnBall()
+
+    public void RespawnBall()
     {
 
-        yield return new WaitForSeconds(5);
         clone_ball = GameObject.Instantiate(ball, initialBallPosition, this.transform.rotation) as GameObject;
-        StopCoroutine(RespawnBall());
+        clone_ball.name = "Sphere";
+        constantWind.x = Random.Range(1F, 10F) / 100 * RandomizeNumberSign();
         can_swipe = true;
     }
    

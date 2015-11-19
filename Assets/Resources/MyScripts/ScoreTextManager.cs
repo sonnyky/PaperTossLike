@@ -17,10 +17,9 @@ public class ScoreTextManager : MonoBehaviour, TextInterface {
 	}
 
 	public void OnChange () {
-		Debug.Log("onchange");
+		//Debug.Log("onchange");
 		GameManager gameManager = GameObject.Find ("GameManager").GetComponent<GameManager> ();
 		int currentPoint = gameManager.GetCurrentPoint ();
-        Debug.Log("Inside game manager : " + currentPoint);
 		scoreText.text = "Score: " + currentPoint.ToString ();
 	}
 
