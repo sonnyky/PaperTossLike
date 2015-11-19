@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.EventSystems;
 
 public class ShootScript : MonoBehaviour {
-    public GameObject ball;
+    private GameObject ball;
     private GameObject clone_ball;
     private Vector3 initialBallPosition;
     private Vector3 constantWind;
@@ -45,7 +45,25 @@ public class ShootScript : MonoBehaviour {
         //Get current distance from ball to bin trajectory
         initial_distance_to_trajectory = initialBallPosition.z - GameManager.GetBinPosition(game_difficulty).z;
 
+
         RespawnBall();
+
+		GameObject gameManager = GameObject.Find("GameManager");
+		GameManager gameManagerScript = gameManager.GetComponent<GameManager> ();
+		
+		switch (gameManagerScript.getPaperType ()) {
+		case 0:
+			ball = (GameObject) Resources.Load ("MyAssets/Prefabs/Papers/BilliardBall");
+			break;
+		case 1:
+			ball = (GameObject) Resources.Load ("MyAssets/Prefabs/Papers/PaperCrane");
+			break;
+//		case 2:
+//			// ball = GameObject.Find ("Granade");
+//			break;
+		}
+        clone_ball = GameObject.Instantiate(ball, initialBallPosition, this.transform.rotation) as GameObject;
+
         can_swipe = true;
         start = new Vector3(0f, 0f, 0f);
         end = new Vector3(0f, 0f, 0f);
@@ -178,14 +196,34 @@ public class ShootScript : MonoBehaviour {
         }
         return sign;
     }
-
-
-    public void RespawnBall()
+	
+    public IEnumerator RespawnBall()
     {
+//        clone_ball = GameObject.Instantiate(ball, initialBallPosition, this.transform.rotation) as GameObject;
+//        clone_ball.name = "Sphere";
+//        constantWind.x = ((float)Random.Range(1, 10) / 25) * RandomizeNumberSign();
 
-        clone_ball = GameObject.Instantiate(ball, initialBallPosition, this.transform.rotation) as GameObject;
-        clone_ball.name = "Sphere";
-        constantWind.x = ((float)Random.Range(1, 10) / 25) * RandomizeNumberSign();
+        print(Time.time);
+        yield return new WaitForSeconds(5);
+		GameObject gameManager = GameObject.Find("GameManager");
+		GameManager gameManagerScript = gameManager.GetComponent<GameManager> ();
+
+		switch (gameManagerScript.getPaperType ()) {
+		case 0:
+			ball = (GameObject) Resources.Load ("MyAssets/Prefabs/Papers/BilliardBall");
+			break;
+		case 1:
+			ball = (GameObject) Resources.Load ("MyAssets/Prefabs/Papers/PaperCrane");
+			break;
+//		case 2:
+//			// ball = GameObject.Find ("Granade");
+//			break;
+		}
+		clone_ball = GameObject.Instantiate(ball, initialBallPosition, this.transform.rotation) as GameObject;
+
+		print(Time.time);
+        StopCoroutine(RespawnBall());
+
         can_swipe = true;
     }
    
