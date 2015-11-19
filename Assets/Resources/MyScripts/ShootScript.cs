@@ -30,7 +30,7 @@ public class ShootScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         initialBallPosition = new Vector3(0f, -0.1f, 1.6f);
-        constantWind = new Vector3(Random.Range(-1F, 1F), 0f, 0f);
+        constantWind = new Vector3(Random.Range(0f, 0.05f), 0f, 0f);
         ExecuteEvents.Execute<TextInterface>(
                 target: GameObject.Find("windStr"),
                 eventData: null,
@@ -77,35 +77,29 @@ public class ShootScript : MonoBehaviour {
                 tangent_swipe_on_screen = Mathf.Deg2Rad * 180 + tangent_swipe_on_screen;
             }
 
-            Debug.Log(Mathf.Rad2Deg * tangent_swipe_on_screen); //Angle of user swipe
-
             vector_bin_to_ball.x = bin_position.x - initialBallPosition.x;
             vector_bin_to_ball.z = bin_position.z - initialBallPosition.z;
             vector_bin_to_ball.y = 0f;
 
             distance_abs = (initial_distance_to_trajectory * 1/Mathf.Sin(tangent_swipe_on_screen)) + 0.01f;
-            Debug.Log("Distance to bin trajectory : " + distance_abs);
-            Debug.Log("gravity :" + Physics.gravity.y);
-            Debug.Log("Initial ball height : " + initialBallPosition.y);
-
+          
             initial_velocity = initialVelocity(distance_abs, Mathf.Abs(Physics.gravity.y), 0.4f, Mathf.Deg2Rad*ball_launch_angle);
-            Debug.Log(initial_velocity);
 
             real_world_velocity.z = Mathf.Sin(tangent_swipe_on_screen) * (initial_velocity * Mathf.Cos(Mathf.Deg2Rad * ball_launch_angle)) * -1;
             real_world_velocity.x = (Mathf.Cos(tangent_swipe_on_screen)) * (initial_velocity * Mathf.Cos(Mathf.Deg2Rad * ball_launch_angle)) * -1;
             real_world_velocity.y = (initial_velocity * Mathf.Sin(Mathf.Deg2Rad * ball_launch_angle));
-            //TODO change this to force
+
             force.x = ball.GetComponent<Rigidbody>().mass * real_world_velocity.x;
             force.y = ball.GetComponent<Rigidbody>().mass * real_world_velocity.y;
             force.z = ball.GetComponent<Rigidbody>().mass * real_world_velocity.z;
             rb = clone_ball.GetComponent<Rigidbody>();
             Debug.Log(force.z);
             Debug.Log(force.y);
-            // Debug.Log(direction_in_world);
+            Debug.Log(force.x);
             force.x += constantWind.x;
             Debug.Log("WIND");
             Debug.Log(constantWind.x);
-            constantWind.x = Random.Range(-1F, 1F);
+            constantWind.x = Random.Range(0F, 0.01F) * RandomizeNumberSign();
             ExecuteEvents.Execute<TextInterface>(
                target: GameObject.Find("windStr"),
                eventData: null,
@@ -165,7 +159,7 @@ public class ShootScript : MonoBehaviour {
 	                force.y = distance_abs*5;
 	                force.z = distance_abs*-2;
                     force.x += constantWind.x;
-                    constantWind.x = Random.Range(-1F, 1F);
+                    constantWind.x = Random.Range(0F, 0.01F) * RandomizeNumberSign();
                     ExecuteEvents.Execute<TextInterface>(
                        target: GameObject.Find("windStr"),
                        eventData: null,
@@ -201,10 +195,21 @@ public class ShootScript : MonoBehaviour {
         return constantWind.x;
     }
 
+    private int RandomizeNumberSign()
+    {
+        int sign = 1;
+        int random_number = Random.Range(1, 3);
+        if(random_number == 2)
+        {
+            sign = -1;
+        }
+        Debug.Log("Sign is : " + sign);
+        return sign;
+    }
+
 
     IEnumerator RespawnBall()
     {
-        print(Time.time);
         yield return new WaitForSeconds(5);
         clone_ball = GameObject.Instantiate(ball, initialBallPosition, this.transform.rotation) as GameObject;
         print(Time.time);

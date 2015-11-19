@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour, PointInterface {
     private static Vector3 easy_pos = new Vector3(0f, -0.5f, 1),
         med_pos = new Vector3(0f, -0.5f, 0.5f),
         hard_pos = new Vector3(0f, -0.5f, 0f);
-    private static Vector3 wind_pos = new Vector3(0.23f, -0.42f, 1.3f);
+    private static Vector3 wind_pos = new Vector3(0.23f, -0.42f, 1.45f);
 
     private int currentPoint;
 	private int highScorePoint;
@@ -47,9 +47,10 @@ public class GameManager : MonoBehaviour, PointInterface {
         LoadUiObjects();
 
         //Instantiate Windmill Object
-        //GameObject windMill = GameObject.Instantiate(Resources.Load("Windmill1/Prehab/Windmill"), wind_pos, Quaternion.Euler(0f, 130f, 0f)) as GameObject;
-        //windMill.name = "Windmill";
-        //Debug.Log("Windmill");
+        GameObject windMill = GameObject.Instantiate(Resources.Load("Windmill/Prefab/Windmill"), wind_pos, Quaternion.Euler(0f, 130f, 0f)) as GameObject;
+        windMill.name = "Windmill";
+        windMill.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
+        Debug.Log("Windmill");
 
         Debug.Log (GameManager.GetDifficulty());
         currentPoint = 0;
