@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour, PointInterface {
     private static Vector3 easy_pos = new Vector3(0f, -0.5f, 1),
         med_pos = new Vector3(0f, -0.5f, 0.5f),
         hard_pos = new Vector3(0f, -0.5f, 0f);
-    private static Vector3 wind_pos = new Vector3(0.23f, -0.42f, 1.3f);
+    private static Vector3 wind_pos = new Vector3(0.23f, -0.42f, 1.45f);
 
     private int currentPoint;
 	private int highScorePoint;
@@ -47,11 +47,10 @@ public class GameManager : MonoBehaviour, PointInterface {
         LoadUiObjects();
 
         //Instantiate Windmill Object
-        //GameObject windMill = GameObject.Instantiate(Resources.Load("Windmill1/Prehab/Windmill"), wind_pos, Quaternion.Euler(0f, 130f, 0f)) as GameObject;
-        //windMill.name = "Windmill";
-        //Debug.Log("Windmill");
+        GameObject windMill = GameObject.Instantiate(Resources.Load("Windmill/Prefab/Windmill"), wind_pos, Quaternion.Euler(0f, 130f, 0f)) as GameObject;
+        windMill.name = "Windmill";
+        windMill.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
 
-        Debug.Log (GameManager.GetDifficulty());
         currentPoint = 0;
 		highScorePoint = 0;
         //change position of recycle bin according to difficulty
@@ -60,22 +59,18 @@ public class GameManager : MonoBehaviour, PointInterface {
             case 1:
                 GameObject trash_bin_easy = GameObject.Instantiate(Resources.Load("MyAssets/Prefabs/Animations/recycle_bin"), easy_pos, Quaternion.Euler(0f, 0f, 180f)) as GameObject;
                 trash_bin_easy.name = "recycle_bin";
-                Debug.Log("Easy mode");
                 break;
             case 2:
                 GameObject trash_bin_medium = GameObject.Instantiate(Resources.Load("MyAssets/Prefabs/Animations/recycle_bin"), med_pos, Quaternion.Euler(0f, 0f, 180f)) as GameObject;
                 trash_bin_medium.name = "recycle_bin";
-                Debug.Log("Medium mode");
                 break;
             case 3:
                 GameObject trash_bin_hard = GameObject.Instantiate(Resources.Load("MyAssets/Prefabs/Animations/recycle_bin"), hard_pos, Quaternion.Euler(0f, 0f, 180f)) as GameObject;
                 trash_bin_hard.name = "recycle_bin";
-                Debug.Log("Hard mode");
                 break;
             default:
                 GameObject trash_bin_default = GameObject.Instantiate(Resources.Load("MyAssets/Prefabs/Animations/recycle_bin"), easy_pos, Quaternion.Euler(0f, 0f, 180f)) as GameObject;
                 trash_bin_default.name = "recycle_bin";
-                Debug.Log("Default mode");
                 break;
         }
 

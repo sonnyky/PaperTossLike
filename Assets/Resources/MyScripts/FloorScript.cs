@@ -16,7 +16,7 @@ public class FloorScript : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other) {
 		if (other.tag == "Paper") {
-			Debug.Log("Collided with the floor");
+			//Debug.Log("Collided with the floor");
 
 			ExecuteEvents.Execute<PointInterface>(
 				target: GameObject.Find("GameManager"),
