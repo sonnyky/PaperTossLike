@@ -38,7 +38,7 @@ public class ShootScript : MonoBehaviour {
                 functor: (x, y) => x.OnChange());
                 */
         real_world_velocity = new Vector3(0f, 0f, 0f);
-        ball_launch_angle = 70.0f;
+        ball_launch_angle = 60.0f;
         //Check current game difficulty
         game_difficulty = GameManager.GetDifficulty();
 
@@ -185,7 +185,7 @@ public class ShootScript : MonoBehaviour {
 
         clone_ball = GameObject.Instantiate(ball, initialBallPosition, this.transform.rotation) as GameObject;
         clone_ball.name = "Sphere";
-        constantWind.x = Random.Range(1F, 10F) / 100 * RandomizeNumberSign();
+        constantWind.x = ((float)Random.Range(1, 10) / 25) * RandomizeNumberSign();
         can_swipe = true;
     }
    
