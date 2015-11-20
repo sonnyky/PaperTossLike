@@ -90,7 +90,8 @@ public class GameManager : MonoBehaviour, PointInterface {
 	public void OnSuccess () {
 		currentPoint += 1;
 		Debug.Log (currentPoint);
-		highScorePoint = System.Math.Max (currentPoint, highScorePoint);
+        
+        highScorePoint = System.Math.Max (currentPoint, highScorePoint);
 		ExecuteEvents.Execute<TextInterface>(
 			target: GameObject.Find("ScoreText"),
 			eventData: null,
@@ -108,7 +109,8 @@ public class GameManager : MonoBehaviour, PointInterface {
 	//     functor: (x,y)=>x.OnFailure());
 	public void OnFailure () {
 		currentPoint = 0;
-		ExecuteEvents.Execute<TextInterface>(
+        
+        ExecuteEvents.Execute<TextInterface>(
 			target: GameObject.Find("ScoreText"),
 			eventData: null,
 			functor: (x,y)=>x.OnChange());
