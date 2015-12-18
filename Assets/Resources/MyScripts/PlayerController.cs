@@ -5,17 +5,25 @@ public class PlayerController : MonoBehaviour {
 
     public bool flag;
     private new Camera camera;
+    private int game_difficulty;
+    private float velocity;
 
     void Start()
     {
         flag = false;
+        velocity = 0.004f;
+        game_difficulty = GameManager.GetDifficulty();
+
+        if (game_difficulty == 2 || game_difficulty == 3)
+        {
+            velocity = 0.0f;
+        }
         camera = Camera.main;
     }
 
 	// Use this for initialization
 	void Update()
     {
-        float velocity = 0.004f;
         Vector3 viewPos = camera.WorldToViewportPoint(this.transform.position);
        
         if (viewPos.x < 0f)
