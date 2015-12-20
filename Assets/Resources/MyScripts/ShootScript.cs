@@ -47,24 +47,7 @@ public class ShootScript : MonoBehaviour {
         //Get current distance from ball to bin trajectory
         initial_distance_to_trajectory = initialBallPosition.z - GameManager.GetBinPosition(game_difficulty).z;
 
-
         RespawnBall();
-
-		GameObject gameManager = GameObject.Find("GameManager");
-		GameManager gameManagerScript = gameManager.GetComponent<GameManager> ();
-		
-		switch (gameManagerScript.getPaperType ()) {
-		case 0:
-			ball = (GameObject) Resources.Load ("MyAssets/Prefabs/Papers/BilliardBall");
-			break;
-		case 1:
-			ball = (GameObject) Resources.Load ("MyAssets/Prefabs/Papers/PaperCrane");
-			break;
-//		case 2:
-//			// ball = GameObject.Find ("Granade");
-//			break;
-		}
-//        clone_ball = GameObject.Instantiate(ball, initialBallPosition, this.transform.rotation) as GameObject;
 
         can_swipe = true;
         start = new Vector3(0f, 0f, 0f);
@@ -211,7 +194,9 @@ public class ShootScript : MonoBehaviour {
 		GameObject gameManager = GameObject.Find("GameManager");
 		GameManager gameManagerScript = gameManager.GetComponent<GameManager> ();
 
+        // Initial position of the paper 
 		Quaternion ballQuatenion = new Quaternion ();
+
 		switch (gameManagerScript.getPaperType ()) {
 		case 0:
 			ball = (GameObject) Resources.Load ("MyAssets/Prefabs/Papers/BilliardBall");
@@ -221,9 +206,9 @@ public class ShootScript : MonoBehaviour {
 			ball = (GameObject) Resources.Load ("MyAssets/Prefabs/Papers/PaperCrane");
 			ballQuatenion = Quaternion.Euler(0f, 270f, 0f);
 			break;
-//		case 2:
-//			// ball = GameObject.Find ("Granade");
-//			break;
+		case 2:
+            ball = (GameObject) Resources.Load ("MyAssets/Prefabs/Papers/Granade");
+			break;
 		}
 		clone_ball = GameObject.Instantiate(ball, initialBallPosition, ballQuatenion) as GameObject;
 

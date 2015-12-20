@@ -5,6 +5,8 @@ using UnityEngine.EventSystems;
 
 public class PaperIconButton : MonoBehaviour {
 
+    public int maxPaperNum = 3;
+
 	// Flag to select paper
 	// 0: Billiard, 1: PaperCrane, 2: Granade
 	private int iconNum;
@@ -25,8 +27,9 @@ public class PaperIconButton : MonoBehaviour {
 
 	public void OnClick () {
 	    Debug.Log ("icon " + iconNum);
-		iconNum = (iconNum + 1) % 2;
+		iconNum = (iconNum + 1) % maxPaperNum;
 
+        // Load the image of button
 	    switch (iconNum) {
 		case 0:
 			buttonImageSprite = Resources.Load<Sprite> ("MyImages/BilliardBallImage");
@@ -34,9 +37,9 @@ public class PaperIconButton : MonoBehaviour {
 		case 1:
 			buttonImageSprite = Resources.Load<Sprite> ("MyImages/PaperPlaneImage");
 			break;
-//		case 2:
-//			buttonImageSprite = Resources.Load<Sprite> ("MyImages/GranadeImage");
-//			break;
+		case 2:
+			buttonImageSprite = Resources.Load<Sprite> ("MyImages/GranadeImage");
+			break;
 		}
 
 		// Notify GameManager that the paper type has been changed
