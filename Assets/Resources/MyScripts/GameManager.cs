@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour, PointInterface, PaperTypeInterface {
 	// High score
 	private int highScorePoint;
 
+    // The type of paper (0: BilliardBall, 1: PaperCrane, 2: Granade)
 	private int paperType;
 
     // Get diffculty in the title scene
@@ -130,15 +131,15 @@ public class GameManager : MonoBehaviour, PointInterface, PaperTypeInterface {
 	}
 
 	public int GetCurrentPoint () {
-		return currentPoint;
+		return this.currentPoint;
 	}
 
 	public int GetHighScorePoint () {
-		return highScorePoint;
+		return this.highScorePoint;
 	}
 	
-	public int getPaperType () {
-		return paperType;
+	public int GetPaperType () {
+		return this.paperType;
 	}
 
     private void LoadUiObjects()
