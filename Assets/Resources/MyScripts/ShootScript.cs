@@ -39,6 +39,8 @@ public class ShootScript : MonoBehaviour {
                 */
         real_world_velocity = new Vector3(0f, 0f, 0f);
         ball_launch_angle = 60.0f;
+		force = new Vector3 (0f, 0f, 0f);
+
         //Check current game difficulty
         game_difficulty = GameManager.GetDifficulty();
 
@@ -62,7 +64,7 @@ public class ShootScript : MonoBehaviour {
 //			// ball = GameObject.Find ("Granade");
 //			break;
 		}
-        clone_ball = GameObject.Instantiate(ball, initialBallPosition, this.transform.rotation) as GameObject;
+//        clone_ball = GameObject.Instantiate(ball, initialBallPosition, this.transform.rotation) as GameObject;
 
         can_swipe = true;
         start = new Vector3(0f, 0f, 0f);
@@ -70,9 +72,9 @@ public class ShootScript : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void FixedUpdate () {
 
-        if(clone_ball.transform.position.z < 1.3f)
+        if (clone_ball.transform.position.z < 1.3f)
         {
             ApplyWind();
         }
@@ -167,7 +169,6 @@ public class ShootScript : MonoBehaviour {
            eventData: null,
            functor: (x, y) => x.OnChange());
 
-
         rb.useGravity = true;
         rb.AddForce(force, ForceMode.Impulse);
     }
@@ -197,32 +198,34 @@ public class ShootScript : MonoBehaviour {
         return sign;
     }
 	
-    public IEnumerator RespawnBall()
+    public void RespawnBall()
     {
-//        clone_ball = GameObject.Instantiate(ball, initialBallPosition, this.transform.rotation) as GameObject;
-//        clone_ball.name = "Sphere";
-//        constantWind.x = ((float)Random.Range(1, 10) / 25) * RandomizeNumberSign();
+		can_swipe = false;
 
-        print(Time.time);
-        yield return new WaitForSeconds(5);
+		// Delete all the game objects tagged "Paper"
+		GameObject[] paperObjects = GameObject.FindGameObjectsWithTag ("Paper");
+		foreach (GameObject paperObject in paperObjects) {
+			Destroy(paperObject);
+		}
+
 		GameObject gameManager = GameObject.Find("GameManager");
 		GameManager gameManagerScript = gameManager.GetComponent<GameManager> ();
 
+		Quaternion ballQuatenion = new Quaternion ();
 		switch (gameManagerScript.getPaperType ()) {
 		case 0:
 			ball = (GameObject) Resources.Load ("MyAssets/Prefabs/Papers/BilliardBall");
+			ballQuatenion = this.transform.rotation;
 			break;
 		case 1:
 			ball = (GameObject) Resources.Load ("MyAssets/Prefabs/Papers/PaperCrane");
+			ballQuatenion = Quaternion.Euler(0f, 270f, 0f);
 			break;
 //		case 2:
 //			// ball = GameObject.Find ("Granade");
 //			break;
 		}
-		clone_ball = GameObject.Instantiate(ball, initialBallPosition, this.transform.rotation) as GameObject;
-
-		print(Time.time);
-        StopCoroutine(RespawnBall());
+		clone_ball = GameObject.Instantiate(ball, initialBallPosition, ballQuatenion) as GameObject;
 
         can_swipe = true;
     }

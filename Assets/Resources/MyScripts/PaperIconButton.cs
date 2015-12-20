@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 public class PaperIconButton : MonoBehaviour {
 
 	// Flag to select paper
-	// 0: Billiard, 1: PaperPlane, 2: Granade
+	// 0: Billiard, 1: PaperCrane, 2: Granade
 	private int iconNum;
 
 	private Sprite buttonImageSprite;
@@ -24,10 +24,10 @@ public class PaperIconButton : MonoBehaviour {
 	}
 
 	public void OnClick () {
-		Debug.Log ("icon " + iconNum);
+	    Debug.Log ("icon " + iconNum);
 		iconNum = (iconNum + 1) % 2;
 
-		switch (iconNum) {
+	    switch (iconNum) {
 		case 0:
 			buttonImageSprite = Resources.Load<Sprite> ("MyImages/BilliardBallImage");
 			break;
@@ -43,6 +43,10 @@ public class PaperIconButton : MonoBehaviour {
 		ExecuteEvents.Execute<PaperTypeInterface>(
 			target: GameObject.Find("GameManager"),
 			eventData: null,
-			functor: (x,y)=>x.OnPaperTypeChange(iconNum));
+			functor: (x,y)=>x.OnPaperTypeChange(iconNum)
+		);
+
+		ShootScript shootScript = GameObject.Find ("Main Camera").GetComponent<ShootScript> ();
+		shootScript.RespawnBall ();
 	}
 }

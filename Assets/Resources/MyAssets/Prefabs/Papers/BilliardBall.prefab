@@ -15,7 +15,7 @@ GameObject:
   - 54: {fileID: 5406034}
   m_Layer: 0
   m_Name: BilliardBall
-  m_TagString: Untagged
+  m_TagString: Paper
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -90,6 +90,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timeToDestory: 3
+  shoot_script_obj: {fileID: 0}
 --- !u!135 &13560768
 SphereCollider:
   m_ObjectHideFlags: 1
@@ -120,6 +121,10 @@ Prefab:
     - target: {fileID: 0}
       propertyPath: m_UseGravity
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: m_TagString
+      value: Paper
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
