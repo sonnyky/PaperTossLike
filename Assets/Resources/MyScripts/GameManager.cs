@@ -2,17 +2,24 @@
 using System.Collections;
 using UnityEngine.EventSystems;
 
-public class GameManager : MonoBehaviour, PointInterface {
+public class GameManager : MonoBehaviour, PointInterface, PaperTypeInterface {
 
 	// 1: easy, 2: medium, 3: hard
 	private static int difficulty;
+
     private static Vector3 easy_pos = new Vector3(0f, -0.5f, 1),
         med_pos = new Vector3(0f, -0.5f, 0.5f),
         hard_pos = new Vector3(0f, -0.5f, 0f);
     private static Vector3 wind_pos = new Vector3(0.23f, -0.42f, 1.45f);
 
-    private int currentPoint;
+	// Current points
+	private int currentPoint;
+
+	// High score
 	private int highScorePoint;
+
+    // The type of paper (0: BilliardBall, 1: PaperCrane, 2: Granade)
+	private int paperType;
 
     // Get diffculty in the title scene
     public static void SetDifficulty (int difficulty) {
@@ -53,6 +60,9 @@ public class GameManager : MonoBehaviour, PointInterface {
 
         currentPoint = 0;
 		highScorePoint = 0;
+
+		paperType = 0;
+
         //change position of recycle bin according to difficulty
         switch (GameManager.GetDifficulty())
         {
@@ -116,12 +126,20 @@ public class GameManager : MonoBehaviour, PointInterface {
 			functor: (x,y)=>x.OnChange());
 	}
 
+	public void OnPaperTypeChange(int paperType) {
+		this.paperType = paperType;
+	}
+
 	public int GetCurrentPoint () {
-		return currentPoint;
+		return this.currentPoint;
 	}
 
 	public int GetHighScorePoint () {
-		return highScorePoint;
+		return this.highScorePoint;
+	}
+	
+	public int GetPaperType () {
+		return this.paperType;
 	}
 
     private void LoadUiObjects()

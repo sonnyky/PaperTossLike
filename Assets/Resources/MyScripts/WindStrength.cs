@@ -7,8 +7,9 @@ public class WindStrength : MonoBehaviour, TextInterface
 
     private Text windStr;
 
-    // Use this for initialization
-    void Start()
+    // This function should be "Awake," not "Start" 
+    // because if it's "Start," OnChange is called by ShootScript#Start (before this#Start)
+    void Awake()
     {
         windStr = this.GetComponent<Text>();
     }
@@ -21,7 +22,6 @@ public class WindStrength : MonoBehaviour, TextInterface
 
     public void OnChange()
     {
-        //Debug.Log("onchange");
         ShootScript shootScript = Camera.main.GetComponent<ShootScript>();
         float currentWind = shootScript.GetCurrentWind();
         windStr.text = "WindStrength: " + currentWind.ToString();

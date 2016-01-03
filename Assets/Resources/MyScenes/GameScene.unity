@@ -1247,7 +1247,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 31fc86e545bbfd046b13a8d72ed1230f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ball: {fileID: 151700, guid: c323c304398e92846a5365dbce5f40fb, type: 2}
 --- !u!82 &1859794448
 AudioSource:
   m_ObjectHideFlags: 0
