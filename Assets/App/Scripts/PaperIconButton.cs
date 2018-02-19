@@ -6,20 +6,23 @@ using UnityEngine.EventSystems;
 public class PaperIconButton : MonoBehaviour {
 
     public int maxPaperNum = 3;
-
+    public Sprite billiardBall;
+    public Sprite paperCrane;
+    public Sprite grenade;
     private bool iconButtonClicked;
 
 	// Flag to select paper
 	// 0: Billiard, 1: PaperCrane, 2: Granade
 	private int iconNum;
-
+    private ShootScript shooter;
 	private Sprite buttonImageSprite;
 
 	// Use this for initialization
 	void Start () {
+        shooter = GameObject.Find("Shooter").GetComponent<ShootScript>();
 		iconNum = 0;
         iconButtonClicked = false;
-		buttonImageSprite = Resources.Load<Sprite> ("MyImages/BilliardBallImage");
+		buttonImageSprite = billiardBall;
 	}
 	
 	// Update is called once per frame
@@ -31,13 +34,13 @@ public class PaperIconButton : MonoBehaviour {
             // Load the image of button
             switch (iconNum) {
             case 0:
-                buttonImageSprite = Resources.Load<Sprite> ("MyImages/BilliardBallImage");
+                buttonImageSprite = billiardBall;
                 break;
             case 1:
-                buttonImageSprite = Resources.Load<Sprite> ("MyImages/PaperPlaneImage");
+                buttonImageSprite = paperCrane;
                 break;
             case 2:
-                buttonImageSprite = Resources.Load<Sprite> ("MyImages/GranadeImage");
+                buttonImageSprite = grenade;
                 break;
             }
             // Change the icon of this button
@@ -51,8 +54,7 @@ public class PaperIconButton : MonoBehaviour {
             );
 
             // Respawn the new paper
-            ShootScript shootScript = GameObject.Find ("Main Camera").GetComponent<ShootScript> ();
-            shootScript.RespawnBall ();
+            shooter.RespawnBall ();
 
             iconButtonClicked = false;
         }

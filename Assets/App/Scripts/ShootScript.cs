@@ -3,6 +3,11 @@ using System.Collections;
 using UnityEngine.EventSystems;
 
 public class ShootScript : MonoBehaviour {
+
+    public GameObject billiardBall;
+    public GameObject grenade;
+    public GameObject paperCrane;
+
     private GameObject ball;
     private GameObject clone_ball;
     private GameObject gameManager;
@@ -186,23 +191,23 @@ public class ShootScript : MonoBehaviour {
 		}
 
         // Initial position of the paper 
-		Quaternion ballQuatenion = new Quaternion ();
+		Quaternion ballQuaternion = new Quaternion ();
 
 		switch (gameManagerScript.GetPaperType ()) {
 		case 0:
-			ball = (GameObject) Resources.Load ("MyAssets/Prefabs/Papers/BilliardBall");
-			ballQuatenion = this.transform.rotation;
+			ball = billiardBall;
+			ballQuaternion = this.transform.rotation;
 			break;
 		case 1:
-			ball = (GameObject) Resources.Load ("MyAssets/Prefabs/Papers/PaperCrane");
-			ballQuatenion = Quaternion.Euler(0f, 270f, 0f);
+			ball = paperCrane;
+			ballQuaternion = Quaternion.Euler(0f, 270f, 0f);
 			break;
 		case 2:
-            ball = (GameObject) Resources.Load ("MyAssets/Prefabs/Papers/Granade");
-            ballQuatenion = this.transform.rotation;
+            ball = grenade;
+            ballQuaternion = this.transform.rotation;
 			break;
 		}
-		clone_ball = GameObject.Instantiate(ball, initialBallPosition, ballQuatenion) as GameObject;
+		clone_ball = GameObject.Instantiate(ball, initialBallPosition, ballQuaternion) as GameObject;
 
         constantWind.x = ((float)Random.Range(1, 10) / 25) * RandomizeNumberSign();
         ExecuteEvents.Execute<TextInterface>(

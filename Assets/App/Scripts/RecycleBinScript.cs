@@ -8,11 +8,12 @@ public class RecycleBinScript : MonoBehaviour {
 	public int waitFrames = 2;
 	private bool enable;
 	private int count;
-    public ShootScript shoot_script_obj;
+    public ShootScript shooter;
 
 	// Use this for initialization
 	void Start () {
-		enable = true;
+        shooter = GameObject.Find("Shooter").GetComponent<ShootScript>();
+        enable = true;
 	}
 	
 	// Update is called once per frame
@@ -31,8 +32,7 @@ public class RecycleBinScript : MonoBehaviour {
 		if (other.tag == "Paper" && enable) {
             Debug.Log("Collided with a recycle bin");
             Destroy(other.gameObject);
-            shoot_script_obj = Camera.main.GetComponent<ShootScript>();
-            shoot_script_obj.RespawnBall();
+            shooter.RespawnBall();
             this.gameObject.GetComponentInChildren<ParticleSystem>().Play();
             this.gameObject.GetComponentInChildren<AudioSource>().Play();
 			ExecuteEvents.Execute<PointInterface>(

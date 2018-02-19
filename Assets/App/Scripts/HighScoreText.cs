@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine.UI;
 
-public class ScoreTextManager : MonoBehaviour, TextInterface {
+public class HighScoreText : MonoBehaviour, TextInterface {
 
 	private Text scoreText;
 
@@ -17,10 +17,8 @@ public class ScoreTextManager : MonoBehaviour, TextInterface {
 	}
 
 	public void OnChange () {
-		//Debug.Log("onchange");
 		GameManager gameManager = GameObject.Find ("GameManager").GetComponent<GameManager> ();
-		int currentPoint = gameManager.GetCurrentPoint ();
-		scoreText.text = "Score: " + currentPoint.ToString ();
+		int highScorePoint = gameManager.GethighScore();
+		scoreText.text = "HighScore: " + highScorePoint.ToString ();
 	}
-
 }
