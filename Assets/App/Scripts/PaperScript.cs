@@ -3,10 +3,10 @@ using System.Collections;
 
 public class PaperScript : MonoBehaviour {
 	
-    public ShootScript shoot_script_obj;
+    public ShootScript shooter;
 	// Use this for initialization
 	void Start () {
-
+        shooter = GameObject.Find("Shooter").GetComponent<ShootScript>();
 	}
 	
 	// Update is called once per frame
@@ -14,8 +14,7 @@ public class PaperScript : MonoBehaviour {
         if (this.transform.position.y < -0.5)
         {
 			Destroy(this.gameObject);
-			shoot_script_obj = Camera.main.GetComponent<ShootScript>();
-            shoot_script_obj.RespawnBall();
+            shooter.RespawnBall();
         }
 	}
 

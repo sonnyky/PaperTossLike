@@ -4,30 +4,37 @@ using UnityEngine.EventSystems;
 
 public class GameManager : MonoBehaviour, PointInterface, PaperTypeInterface {
 
-	// 1: easy, 2: medium, 3: hard
+	// Game Difficulty as selected in the title screen. 1: easy, 2: medium, 3: hard
 	private static int difficulty;
+
+    public  GameObject uiCamera;
+    public  GameObject recycleBin;
+    public  GameObject windmill;
+
+    private static ILogger logger = Debug.unityLogger;
+    private static string  kTAG   = "TinkerApp_PaperToss";
 
     private static Vector3 easy_pos = new Vector3(0f, -0.5f, 1),
         med_pos = new Vector3(0f, -0.5f, 0.5f),
         hard_pos = new Vector3(0f, -0.5f, 0f);
     private static Vector3 wind_pos = new Vector3(0.23f, -0.42f, 1.45f);
 
-	// Current points
-	private int currentPoint;
-
-	// High score
-	private int highScorePoint;
+	private int currentScore;
+	private int highScore;
 
     // The type of paper (0: BilliardBall, 1: PaperCrane, 2: Granade)
 	private int paperType;
 
-    // Get diffculty in the title scene
+    // This static method is reachable from anywhere so we can launch the game with the correct difficulty settings.
     public static void SetDifficulty (int difficulty) {
 		GameManager.difficulty = difficulty;
 	}
 
-	// Get diffculty from the title scene
-	public static int GetDifficulty () {
+    /// <summary>
+    /// Returns the game difficulty settings. Static so it can be accessed anywhere.
+    /// </summary>
+    /// <returns>int. 1: easy, 2: medium, 3: hard </returns>
+    public static int GetDifficulty () {
 		return difficulty;
 	}
 
@@ -51,15 +58,14 @@ public class GameManager : MonoBehaviour, PointInterface, PaperTypeInterface {
 
 	// Use this for initialization
 	void Start () {
-        LoadUiObjects();
 
         //Instantiate Windmill Object
-        GameObject windMill = GameObject.Instantiate(Resources.Load("Windmill/Prefab/Windmill"), wind_pos, Quaternion.Euler(0f, 130f, 0f)) as GameObject;
+        GameObject windMill = GameObject.Instantiate(windmill, wind_pos, Quaternion.Euler(0f, 130f, 0f)) as GameObject;
         windMill.name = "Windmill";
         windMill.transform.localScale = new Vector3(0.05f, 0.05f, 0.05f);
 
-        currentPoint = 0;
-		highScorePoint = 0;
+        currentScore = 0;
+		highScore = 0;
 
 		paperType = 0;
 
@@ -67,19 +73,19 @@ public class GameManager : MonoBehaviour, PointInterface, PaperTypeInterface {
         switch (GameManager.GetDifficulty())
         {
             case 1:
-                GameObject trash_bin_easy = GameObject.Instantiate(Resources.Load("MyAssets/Prefabs/Animations/recycle_bin"), easy_pos, Quaternion.Euler(0f, 0f, 180f)) as GameObject;
+                GameObject trash_bin_easy = GameObject.Instantiate(recycleBin, easy_pos, Quaternion.Euler(0f, 0f, 180f)) as GameObject;
                 trash_bin_easy.name = "recycle_bin";
                 break;
             case 2:
-                GameObject trash_bin_medium = GameObject.Instantiate(Resources.Load("MyAssets/Prefabs/Animations/recycle_bin"), med_pos, Quaternion.Euler(0f, 0f, 180f)) as GameObject;
+                GameObject trash_bin_medium = GameObject.Instantiate(recycleBin, med_pos, Quaternion.Euler(0f, 0f, 180f)) as GameObject;
                 trash_bin_medium.name = "recycle_bin";
                 break;
             case 3:
-                GameObject trash_bin_hard = GameObject.Instantiate(Resources.Load("MyAssets/Prefabs/Animations/recycle_bin"), hard_pos, Quaternion.Euler(0f, 0f, 180f)) as GameObject;
+                GameObject trash_bin_hard = GameObject.Instantiate(recycleBin, hard_pos, Quaternion.Euler(0f, 0f, 180f)) as GameObject;
                 trash_bin_hard.name = "recycle_bin";
                 break;
             default:
-                GameObject trash_bin_default = GameObject.Instantiate(Resources.Load("MyAssets/Prefabs/Animations/recycle_bin"), easy_pos, Quaternion.Euler(0f, 0f, 180f)) as GameObject;
+                GameObject trash_bin_default = GameObject.Instantiate(recycleBin, easy_pos, Quaternion.Euler(0f, 0f, 180f)) as GameObject;
                 trash_bin_default.name = "recycle_bin";
                 break;
         }
@@ -98,16 +104,16 @@ public class GameManager : MonoBehaviour, PointInterface, PaperTypeInterface {
     //     eventData: null,
     //     functor: (x,y)=>x.OnSuccess());
 	public void OnSuccess () {
-		currentPoint += 1;
-		Debug.Log (currentPoint);
+		currentScore += 1;
+		Debug.Log (currentScore);
         
-        highScorePoint = System.Math.Max (currentPoint, highScorePoint);
+        highScore = System.Math.Max (currentScore, highScore);
 		ExecuteEvents.Execute<TextInterface>(
-			target: GameObject.Find("ScoreText"),
+			target: GameObject.Find("UIScreen").transform.Find("ScoreText").gameObject,
 			eventData: null,
 			functor: (x,y)=>x.OnChange());
 		ExecuteEvents.Execute<TextInterface>(
-			target: GameObject.Find("HighScoreText"),
+			target: GameObject.Find("UIScreen").transform.Find("HighScoreText").gameObject,
 			eventData: null,
 			functor: (x,y)=>x.OnChange());
 	}
@@ -118,10 +124,10 @@ public class GameManager : MonoBehaviour, PointInterface, PaperTypeInterface {
 	//     eventData: null,
 	//     functor: (x,y)=>x.OnFailure());
 	public void OnFailure () {
-		currentPoint = 0;
+		currentScore = 0;
         
         ExecuteEvents.Execute<TextInterface>(
-			target: GameObject.Find("ScoreText"),
+			target: GameObject.Find("UIScreen").transform.Find("ScoreText").gameObject,,
 			eventData: null,
 			functor: (x,y)=>x.OnChange());
 	}
@@ -130,21 +136,15 @@ public class GameManager : MonoBehaviour, PointInterface, PaperTypeInterface {
 		this.paperType = paperType;
 	}
 
-	public int GetCurrentPoint () {
-		return this.currentPoint;
+	public int GetCurrentScore () {
+		return this.currentScore;
 	}
 
-	public int GetHighScorePoint () {
-		return this.highScorePoint;
+	public int GethighScore () {
+		return this.highScore;
 	}
 	
 	public int GetPaperType () {
 		return this.paperType;
 	}
-
-    private void LoadUiObjects()
-    {
-        GameObject.Instantiate(Resources.Load("MyAssets/Prefabs/UI/UICamera"));
-    }
-
 }
