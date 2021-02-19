@@ -5,9 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/ClassRoom Stuff/Showcase.unity
   - enabled: 1
-    path: Assets/Resources/MyScenes/TitleScene.unity
+    path: Assets/App/Scenes/TitleScene.unity
+    guid: f9b0af517903a4ebba1f2c70d97811cd
   - enabled: 1
-    path: Assets/Resources/MyScenes/GameScene.unity
+    path: Assets/App/Scenes/GameScene.unity
+    guid: 55a94f0fae42901419d543367add0add
+  m_configObjects: {}

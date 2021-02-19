@@ -9,6 +9,7 @@ public class ShootScript : MonoBehaviour {
     public GameObject paperCrane;
 
     private GameObject ball;
+    private bool mBallExists = false;
     private GameObject clone_ball;
     private GameObject gameManager;
 
@@ -68,11 +69,16 @@ public class ShootScript : MonoBehaviour {
         end = new Vector3(0f, 0f, 0f);
 	}
 	
+    public void BallDisabled()
+    {
+        mBallExists = false;
+    }
+
 	// Update is called once per frame
 	void FixedUpdate () {
-        if (clone_ball.transform.position.z < 1.3f)
+        if (mBallExists)
         {
-            ApplyWind();
+            if (clone_ball.transform.position.z < 1.3f) ApplyWind();
         }
 
         //This is just for checking the angles
@@ -208,7 +214,7 @@ public class ShootScript : MonoBehaviour {
 			break;
 		}
 		clone_ball = GameObject.Instantiate(ball, initialBallPosition, ballQuaternion) as GameObject;
-
+        mBallExists = true;
         constantWind.x = ((float)Random.Range(1, 10) / 25) * RandomizeNumberSign();
         ExecuteEvents.Execute<TextInterface>(
             target: GameObject.Find("windStr"),

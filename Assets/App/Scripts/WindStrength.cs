@@ -22,7 +22,7 @@ public class WindStrength : MonoBehaviour, TextInterface
 
     public void OnChange()
     {
-        ShootScript shootScript = Camera.main.GetComponent<ShootScript>();
+        ShootScript shootScript = GameObject.Find("Shooter").GetComponent<ShootScript>();
         float currentWind = shootScript.GetCurrentWind();
         windStr.text = "WindStrength: " + currentWind.ToString();
     }
