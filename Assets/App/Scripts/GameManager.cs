@@ -127,7 +127,7 @@ public class GameManager : MonoBehaviour, PointInterface, PaperTypeInterface {
 		currentScore = 0;
         
         ExecuteEvents.Execute<TextInterface>(
-			target: GameObject.Find("UIScreen").transform.Find("ScoreText").gameObject,,
+			target: GameObject.Find("UIScreen").transform.Find("ScoreText").gameObject,
 			eventData: null,
 			functor: (x,y)=>x.OnChange());
 	}
