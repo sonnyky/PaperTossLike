@@ -7,7 +7,6 @@ public class GameManager : MonoBehaviour, PointInterface, PaperTypeInterface {
 	// Game Difficulty as selected in the title screen. 1: easy, 2: medium, 3: hard
 	private static int difficulty;
 
-    public  GameObject uiCamera;
     public  GameObject recycleBin;
     public  GameObject windmill;
 
